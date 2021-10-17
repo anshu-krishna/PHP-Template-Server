@@ -7,5 +7,5 @@ class Page extends \KriTS\Abstract\Route {
 		'@\d+' => 'Number'
 	];
 	const Post = 'PageFoot';
-	const Here = 'PageDefault';
+	const Here = ['StyleTag', 'PageDefault'];
 }
