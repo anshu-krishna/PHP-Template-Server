@@ -4,7 +4,8 @@ namespace KriTS;
 class OBuffer extends \KriTS\Abstract\StaticOnly {
 	const GZIP = true;
 	public static function start() : bool{
-		return ob_start(static::GZIP ? 'ob_gzhandler' : null);
+		// return ob_start(static::GZIP ? 'ob_gzhandler' : null);
+		return ob_start();
 	}
 	public static function end() : string {
 		$ret = ob_get_clean();

@@ -2,6 +2,7 @@
 namespace KriTS\Abstract;
 
 use KriTS\Framework;
+use KriTS\OBuffer;
 
 abstract class Route extends \KriTS\Abstract\StaticOnly {
 	const Pre = null;
@@ -9,7 +10,19 @@ abstract class Route extends \KriTS\Abstract\StaticOnly {
 	const Next = null;
 	const Post = null;
 
-	final public static function get_info() {
+	public static $error = null;
+
+	final protected static function _set_error(string $message) {
+		$file = (new \ReflectionClass(static::class))->getFileName();
+		static::$error = ['file' => $file, 'msg' => $message];
+		return null;
+		// OBuffer::start();
+		// Framework::echo_error_in_user_class(static::class, $message);
+		// static::$error = OBuffer::end();
+		// return null;
+	}
+
+	final public static function get_info() : ?array {
 		$is_string_array = function(mixed $a) : bool {
 			if(!is_array($a)) {
 				return false;
@@ -37,27 +50,24 @@ abstract class Route extends \KriTS\Abstract\StaticOnly {
 
 		$info['pre'] = $transform(static::Pre);
 		if($info['pre'] === null) {
-			Framework::echo_error_in_user_class(static::class, 'Invalid value of const Pre');
-			return null;
+			return static::_set_error('Invalid value of const Pre');
 		}
 
 		$info['here'] = $transform(static::Here);
 		if($info['here'] === null) {
-			Framework::echo_error_in_user_class(static::class, 'Invalid value of const Here');
-			return null;
+			return static::_set_error('Invalid value of const Here');
 		}
 
 		$info['next'] = static::Next ?? [];
 		if(!is_array($info['next'])) {
-			Framework::echo_error_in_user_class(static::class, 'Invalid value of const Next');
-			return null;
+			return static::_set_error('Invalid value of const Next');
 		}
 		
 		$info['post'] = $transform(static::Post);
 		if($info['post'] === null) {
-			Framework::echo_error_in_user_class(static::class, 'Invalid value of const Post');
-			return null;
+			return static::_set_error('Invalid value of const Post');
 		}
+		// print_r($info);
 		return $info;
 	}
 }

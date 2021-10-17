@@ -78,7 +78,7 @@ final class Router extends \KriTS\Abstract\StaticOnly {
 		// Load info
 		$info = $route::get_info();
 		if($info === null) {
-			static::$_ret->add_error("Invalid info in {$route}");
+			static::$_ret->add_error($route::$error);
 			return;
 		}
 		// Add Pre if present

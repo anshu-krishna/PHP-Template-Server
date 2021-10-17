@@ -36,7 +36,7 @@ final class Framework extends \KriTS\Abstract\StaticOnly {
 		static::$_flags['init'] = true;
 		
 		// Start buffering
-		OBuffer::start();
+		// OBuffer::start();
 
 		// Setup error handling
 		error_reporting(0);
@@ -58,7 +58,7 @@ final class Framework extends \KriTS\Abstract\StaticOnly {
 				}
 			}
 			// Dump buffer on exit
-			OBuffer::dump_all();
+			// OBuffer::dump_all();
 		});
 
 		// Setup Config
@@ -89,12 +89,48 @@ final class Framework extends \KriTS\Abstract\StaticOnly {
 			return $q;
 		})();
 	}
+	private static function _get_template_class(string $value) : ?string {
+		$value = Config::$TEMPLATE_NAMESPACE . "\\{$value}";
+		if(class_exists($value)) {
+			if(is_subclass_of($value, \KriTS\Abstract\Template::class)) {
+				return $value;
+			} else {
+				Framework::echo_error("Template '{$value}' must be a subclass of '" . \KriTS\Abstract\Template::class . "'");
+				return null;
+			}
+		} else {
+			Framework::echo_error("Template '{$value}' not found");
+			return null;
+		}
+	}
 	public static function execute() {
 		if(!static::$_flags['init']) {
 			static::echo_error('Framework has not been initialised');
+			return;
 		}
 		Router::init(static::$_req_path);
 		$templates = Router::get_info();
-		print_r(JSON::encode($templates, true));
+		// print_r(JSON::encode($templates, true));
+		foreach($templates as $t) {
+			// print_r($t);
+			if($t['error'] === false) {
+				$template = static::_get_template_class($t['template']);
+				if($template !== null) {
+					echo $template::render($t['path']);
+				}
+			} else {
+				if($t['type'] === 404) {
+					$template = static::_get_template_class('Template404');
+					if($template === null) {
+						Framework::echo_error('404: Template not found');
+					} else {
+						echo $template::render($t);
+					}
+					break;
+				} else {
+					Framework::_echo_error($t['error']);
+				}
+			}
+		}
 	}
 }
