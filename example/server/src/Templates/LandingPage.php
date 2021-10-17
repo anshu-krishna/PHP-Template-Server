@@ -4,6 +4,9 @@ namespace APP\Templates;
 class LandingPage extends \KriTS\Abstract\Template {
 	public static function define(array $path) {
 ?>
+<head>
+	<meta charset="UTF-8">
+	<title>App Main</title>
 <style>
 	body {
 		box-sizing: border-box;
@@ -18,7 +21,10 @@ class LandingPage extends \KriTS\Abstract\Template {
 		justify-content: center;
 	}
 </style>
-<h1>Welcome to the landing page</h1>
+</head>
+<body>
+	<h1>Welcome to the landing page</h1>
+</body>
 <?php
 	}
 }
