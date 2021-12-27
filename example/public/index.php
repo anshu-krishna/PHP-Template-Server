@@ -13,11 +13,7 @@ use KriTS\RouteNode as RN;
 	"root_start",
 	"root",
 	["root_end", "@test.txt", "@test.html", "@test.php"],
-	new RE('abc', new RN(
-		"abc_start",
-		"abc",
-		"abc_end"
-	)),
+	new RE('abc', '@abc.php'),
 	new RE('@pqr=[a-z][0-9]', new RN(
 		"pqr_start",
 		"pqr",

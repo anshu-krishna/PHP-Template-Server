@@ -4,7 +4,8 @@ namespace KriTS;
 class Server extends Abstract\StaticOnly {
 	private static bool $init_flag = false;
 	private static bool $error_flag = false;
-	private static string $template_path;
+	public static string $templates_path;
+	public static string $routes_path;
 	
 	private static function _echo_error(mixed $value) {
 		if(Config::$dev_mode) {
@@ -23,11 +24,12 @@ class Server extends Abstract\StaticOnly {
 		$trace['msg'] = $msg;
 		static::_echo_error($trace);
 	}
-	public static function init(?string $template_path = null) {
-		if($template_path === null) {
-			$template_path = dirname(getcwd()) . '/src/templates/';
-		}
-		static::$template_path = $template_path;
+	public static function init(?string $templates_path = null, ?string $routes_path = null) {
+		$app_src_path = dirname(getcwd()) . '/src/';
+
+		static::$templates_path = $templates_path ?? ($app_src_path . 'templates/');
+		static::$routes_path = $routes_path ?? ($app_src_path . 'routes/');
+		
 		if(static::$init_flag) {
 			return;
 		}
@@ -67,8 +69,10 @@ class Server extends Abstract\StaticOnly {
 		}
 		exit(0);
 	}
-	public static function load_template(string $file) : string {
-		$file = static::$template_path . $file;
+	public static function load_template(string $file, bool $relative = true) : string {
+		if($relative) {
+			$file = static::$templates_path . $file;
+		}
 		ob_start();
 		if(file_exists($file)) {
 			$ext = pathinfo($file, PATHINFO_EXTENSION);

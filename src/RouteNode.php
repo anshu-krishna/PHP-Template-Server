@@ -57,10 +57,16 @@ class RouteNode {
 			$list = [$list];
 		}
 		foreach($list as $t) {
-			if('@' === ($t[0] ?? null)) {
-				echo Server::load_template(substr($t, 1));
-			} else {
-				echo $t;
+			switch($t[0] ?? null) {
+				case '@':
+					echo Server::load_template(substr($t, 1));
+					break;
+				case '#':
+					echo Server::load_template(substr($t, 1), false);
+					break;
+				default:
+					echo $t;
+					break;
 			}
 			if(Config::$dev_mode) {
 				echo "<!--\n-------Tempate divider-------\n-->";
