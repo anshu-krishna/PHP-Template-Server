@@ -2,8 +2,8 @@
 namespace KriTS;
 
 class Debugger extends \KriTS\Abstract\StaticOnly {
-	public static function echo(mixed $info) {
-		Framework::echo_debug($info);
+	public static function echo(mixed $info, bool $use_print_r = false) {
+		Server::echo_debug($info, $use_print_r);
 	}
 	protected static function get_function_name($trace) {
 		$name = $trace['class'] ?? null;
@@ -43,19 +43,19 @@ class Debugger extends \KriTS\Abstract\StaticOnly {
 		return $location;
 	}
 
-	public static function dump(string $key, mixed $value, ?string $callpoint = null) {
+	public static function dump(string $key, mixed $value, ?string $callpoint = null, bool $use_print_r = false) {
 		$callpoint = $callpoint ?? (__CLASS__ . '\\' . __FUNCTION__);
 		$trace = self::trace_call_point($callpoint);
 		unset($trace['call_to']);
 		$trace['msg'] = [$key => $value];
-		static::echo($trace);
+		static::echo($trace, $use_print_r);
 	}
 
-	public static function dump_trace(bool $ignore_args = true) {
+	public static function dump_trace(bool $ignore_args = true, bool $use_print_r = false) {
 		if($ignore_args) {
-			static::echo(['trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)]);
+			static::echo(['trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)], $use_print_r);
 		} else {
-			static::echo(['trace' => debug_backtrace(0)]);
+			static::echo(['trace' => debug_backtrace(0)], $use_print_r);
 		}
 	}
 }
