@@ -24,6 +24,11 @@ use KriTS\RouteNode as RN;
 			"any_end"
 		))
 	)),
+	new RE('@ci~ci_test', new RN(
+		"ci_test_start",
+		"ci_test",
+		"ci_test_end"
+	)),
 	new RE('a404', new RN(
 		"404_start",
 		"404",

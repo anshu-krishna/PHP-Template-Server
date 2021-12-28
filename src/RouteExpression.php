@@ -7,20 +7,20 @@ class RouteExpression {
 	private string|array $exp;
 	public function __construct(
 		string $exp,
-		private RouteNode|string $route,
-		// private RouteExpressionType $expType = RouteExpressionType::Plain
+		private RouteNode|string $route
 	) {
 		$this->exp = $exp;
-		preg_match('/^(?:@)(?<var>\\w+)((?:=)(?<reg>.+))?$/', $this->exp, $match);
+		preg_match('/^(?:@)(?<var>\\w+)((?<flag>[=~])(?<reg>.+))?$/', $this->exp, $match);
 		$var = $match['var'] ?? null;
 		$reg = $match['reg'] ?? null;
+		$flag = $match['flag'] ?? null;
 		if($var === null) {
 			$this->expType = RET::Plain;
 		} else {
 			$this->exp = $var;
 			$this->expType = RET::Variable;
 			if($reg !== null) {
-				$this->exp = [$var, $reg];
+				$this->exp = [$var, $reg, $flag === '~'];
 				$this->expType = RET::Regex;
 			}
 		}
@@ -67,7 +67,7 @@ class RouteExpression {
 				return $this->route;
 				break;
 			case RET::Regex:
-				if(1 === preg_match('/^'. $this->exp[1] .'$/', $path)) {
+				if(1 === preg_match('/^'. $this->exp[1] .'$/' . ($this->exp[2] ? 'i' : ''), $path)) {
 					Router::$path_vars[$this->exp[0]] = $path;
 					$this->load_route();
 					return $this->route;
