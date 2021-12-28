@@ -1,6 +1,6 @@
 {
     "name": "anshu-krishna/template-server",
-    "description": "A framework for serving webpages based on templates",
+    "description": "A light-weight framework for serving webpages based on templates",
     "type": "framework",
     "license": "MIT",
     "authors": [
