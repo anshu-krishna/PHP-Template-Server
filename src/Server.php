@@ -24,7 +24,7 @@ class Server extends Abstract\StaticOnly {
 		$trace['msg'] = $msg;
 		static::_echo_error($trace);
 	}
-	public static function init(?string $templates_path = null, ?string $routes_path = null) {
+	public static function init(?string $templates_path = null, ?string $routes_path = null) : void {
 		$app_src_path = dirname(getcwd()) . '/src/';
 
 		static::$templates_path = $templates_path ?? ($app_src_path . 'templates/');

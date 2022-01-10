@@ -2,14 +2,16 @@
 namespace APP;
 require_once "../vendor/autoload.php";
 
+use KriTS\Config;
+use KriTS\Server;
 use KriTS\RouteExpression as RE;
 use KriTS\RouteNode as RN;
 
-\KriTS\Config::$dev_mode = true;
-// \KriTS\Server::init(__DIR__ . '/templates');
-\KriTS\Server::init();
+Config::$dev_mode = true;
+// Server::init(__DIR__ . '/templates');
+Server::init();
 
-\KriTS\Server::execute(new RN(
+Server::execute(new RN(
 	"root_start",
 	"root",
 	["root_end", "@test.txt", "@test.html", "@test.php"],
