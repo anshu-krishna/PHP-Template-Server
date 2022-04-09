@@ -47,9 +47,9 @@ new \KriTS\RouteNode (
 - **null**: It means there is no template
 - **array**: One of more string values as described below
 - **string**: It can be used in following ways
-	- Default: plaintext as template.
-	- @file_path: loads file at path 'file_path' relative to the default templates_path
-	- #file_path: loads file at absolute path 'file_path'
+	- `Default`: plaintext as template.
+	- `@file_path`: loads file at path `'file_path'` relative to the default `templates_path`
+	- `#file_path`: loads file at absolute path `'file_path'`
 
 ### RouteExpression:
 ```php
@@ -64,7 +64,7 @@ If string starts with '@' then file_path is relative to the default routes_path.
 If string starts with '#' then file_path is absolute.
 
 `$exp` can have following formats:
-- `'plaintext'`: matches 'plaintext'
+- `'plaintext'`: matches `'plaintext'`
 - `'@var1'`: matches anything. The matched value is assigned to `Router::$path_vars` list with `var1` as key.
 - `'@var2=pattern'`: matches `RegExp` defined by `pattern`. The matched value is assigned to `Router::$path_vars` list with `var2` as key.
 - `'@var3~pattern'`: matches `RegExp` defined by `pattern` with case-insensitive flag. The matched value is assigned to `Router::$path_vars` list with `var3` as key.

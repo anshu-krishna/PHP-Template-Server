@@ -69,7 +69,7 @@ class RouteNode {
 					break;
 			}
 			if(Config::$dev_mode) {
-				echo "<!--\n-------Tempate divider-------\n-->";
+				echo "<!--\n-------Template divider-------\n-->";
 			}
 		}
 	}
